@@ -1,0 +1,20 @@
+# Ignore videos
+*.mp4
+*.avi
+
+# Ignore images
+*.jpg
+*.jpeg
+*.png
+
+# Ignore environments
+venv/
+
+# Ignore specific folders
+videos/
+.ipynb_checkpoints/
+__pycache__/
+
+# Ignore specific files
+*.ipynb
+.ignorefile

@@ -1,0 +1,37 @@
+version: '3.7'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "10234:10234"  # Expose the FastAPI app on port 8000
+    depends_on:
+      - mongodb
+    environment:
+      MONGO_URL: mongodb://mongodb:27018  # Change to match the MongoDB container's internal port
+      MONGO_DB_NAME: ${MONGO_DB_NAME}
+      SECRET_KEY: ${SECRET_KEY}
+      ALGORITHM: ${ALGORITHM}
+      ACCESS_TOKEN_EXPIRE_MINUTES: ${ACCESS_TOKEN_EXPIRE_MINUTES}
+      EMBEDDING_MODEL_PATH: ${EMBEDDING_MODEL_PATH}
+      BEST_MODEL_PATH: ${BEST_MODEL_PATH}
+      SHAPE_PREDICTOR_PATH: ${SHAPE_PREDICTOR_PATH}
+      ENV: ${ENV}
+      DEBUG: ${DEBUG}
+      GMAIL_USERNAME: ${GMAIL_USERNAME}
+      GMAIL_PASSWORD: ${GMAIL_PASSWORD}
+
+  mongodb:
+    image: mongo:latest  # Use the latest MongoDB image from Docker Hub
+    ports:
+      - "27018:27018"  # Expose MongoDB on a different host port
+    volumes:
+      - mongo_data:/data/db  # Mount a volume to store MongoDB data
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js
+    environment:
+      MONGO_INITDB_DATABASE: ${MONGO_DB_NAME}  # Initial database name
+
+volumes:
+  mongo_data:  # Define a volume named mongo_data to store MongoDB data

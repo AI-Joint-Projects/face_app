@@ -1,1 +1,1 @@
-# face_app
+# face-app
